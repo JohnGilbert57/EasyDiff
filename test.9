@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# students must NOT change this file in any way!!!
+PATH=/bin:/usr/bin
+TEST=$0
+
+# this is the commandline to use
+ARGS="grademe.1"
+
+# this is the correct output
+# this is the output they should create
+echo "./ediff: Bad file descriptor" > $TEST.correct 2>&1
+
+# don't change anything else
+echo "Running command: ./ediff ${ARGS}.? 1>&-" 
+./ediff ${ARGS}.? 1>&- 2> $TEST.myoutput
+if cmp -s $TEST.correct $TEST.myoutput; then
+    echo "PASSES"; exit 0
+else
+    echo "FAILS"; 
+    echo '==== output differences: < means the CORRECT output, > means YOUR output'
+    echo 'see man page for "diff" and "cat" with arguments "-vet" for details on the output'
+    diff $TEST.correct $TEST.myoutput | cat -evt
+    exit 99
+fi
